@@ -1,0 +1,16 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    display: flex;
+    background: gray;
+}
+.left{
+    width: 300px;
+    background: #afaf8c;
+}
+.contents{
+    flex: 1;
+    background: #c4beff;
+}
