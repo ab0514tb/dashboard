@@ -2,6 +2,42 @@
 <html>
 <head lang='en'>
     <meta charset='UTF-8'>
+    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
+    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script>
+
+        // jQuery(function($){
+        //     $("#foo-table").DataTable({
+        //         // 件数切替機能 無効
+        //         lengthChange: true,
+        //         // 検索機能 無効
+        //         searching: true,
+        //         // ソート機能 無効
+        //         ordering: true,
+        //         // 情報表示 無効
+        //         info: true,
+        //         // ページング機能 無効
+        //         paging: true,
+        //         // 横スクロールバーを有効にする (scrollXはtrueかfalseで有効無効を切り替えます)
+        //         scrollX: false,
+        //         // 縦スクロールバーを有効にする (scrollYは200, "200px"など「最大の高さ」を指定します)
+        //         scrollY: 200,
+        //         // 列設定
+        //         columnDefs: [
+        //             // 1列目を消す(visibleをfalseにすると消えます)
+        //             { targets: 0, visible: false },
+        //             // 2列目(0から始まるため1になっています)の幅を100pxにする
+        //             { targets: 1, width: 100 }
+        //         ],
+        //         // 件数切替の値を10～50の10刻みにする
+        //         lengthMenu: [ 10, 20, 30, 40, 50 ],
+        //         // 件数のデフォルトの値を50にする
+        //         displayLength: 10,
+        //         // 状態を保存する機能をつける
+        //         stateSave: true,
+        //     });
+        // });
+    </script>
     <title>two-column</title>
     <style>
         html,
@@ -11,7 +47,6 @@
             padding: 0;
         }
         .container{
-            background: black;
             display: flex;
             height: 100%;
         }
@@ -19,8 +54,7 @@
             background: #69c;
             width: 300px;
         }
-        .contents{
-            background: #84CAA7;
+        .contents2{
             flex: 1;
         }
     </style>
@@ -32,9 +66,42 @@
             <li>side</li>
         </ul>
     </div>
-    <div class='contents'>
+    <div class='contents2'>
         <h1>contents</h1>
+        <table>
+    <thead>
+        <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script src ="load-json.js"></script>
+        <!-- <table id="foo-table" class="table table-bordered">
+            <thead>
+                <tr><th>No</th><th>都道府県</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>北海道</td></tr>
+                <tr><td>2</td><td>青森県</td></tr>
+                <tr><td>3</td><td>岩手県</td></tr>
+                <tr><td>4</td><td>宮城県</td></tr>
+                <tr><td>5</td><td>秋田県</td></tr>
+                <tr><td>6</td><td>山形県</td></tr>
+                <tr><td>7</td><td>福島県</td></tr>
+                <tr><td>8</td><td>茨城県</td></tr>
+                <tr><td>9</td><td>栃木県</td></tr>
+                <tr><td>10</td><td>群馬県</td></tr>
+                <tr><td>47</td><td>沖縄県</td></tr>
+            </tbody>
+        </table> -->
     </div>
 </div>
 </body>
 </html>
+<!--
+http://arimo.hatenablog.com/entry/2013/07/09/114901
+https://qiita.com/nissuk/items/7ac59af5de427c0585c5
+ -->
