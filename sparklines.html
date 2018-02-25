@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        $(".line").sparkline([5,6,7,8,9,5,3,2,0,4,6,0,3,7,8,4,1,3,8,6,4], {
+            type: 'line',
+            width: '100',
+            height: '50',
+            lineColor: '#335577',
+            lineWidth: 2,
+            spotColor: '#ee5555',
+            minSpotColor: '#88aacc',
+            highlightSpotColor: '#335577',
+            highlightLineColor: '#335577',
+            spotRadius: 3,
+            chartRangeMin: -2,
+            chartRangeMax: 11,
+            chartRangeMinX: -2,
+            chartRangeMaxX: 22,
+            normalRangeMin: 2,
+            normalRangeMax: 7,
+            drawNormalOnTop: true
+        });
+        $(".bar").sparkline([3,4,5,2,0,-5,-3,4,2,-4], {
+            type: 'bar',
+            height: '50',
+            barSpacing: 2,
+            barColor: '#6666cc',
+            negBarColor: '#cc6666',
+            zeroColor: '#999999'
+        });
+        $(".tristate").sparkline([1,1,0,1,-1,-1,1,-1,0,0,1,1 ], {
+            type: 'tristate',
+            height: '50',
+            posBarColor: '#66cc66',
+            negBarColor: '#cc6666',
+            zeroBarColor: '#6666cc',
+            barWidth: 5,
+            barSpacing: 2,
+        });
+        $(".discrete").sparkline([5,6,9,8,4,2,1,0,3,7], {
+            type: 'discrete',
+            width: '100',
+            height: '50',
+            lineColor: '#6666cc',
+            lineHeight: 20,
+            thresholdValue: 3,
+            thresholdColor: '#cc6666'
+        });
+        $(".bullet").sparkline([10,12,12,9,7], {
+            type: 'bullet',
+            height: '20',
+            targetWidth: 10,
+            targetColor: '#cc6666',
+            performanceColor: '#6666cc'
+        });
+        $(".pie").sparkline([5,3,1], {
+            type: 'pie',
+            width: '50',
+            height: '50 ',
+            sliceColors: ['#6666cc','#cc6666','#66cc66'],
+            offset: -90,
+            borderWidth: 2,
+            borderColor: '#b2b2b2'
+        });
+        $(".boxplot").sparkline([0,2,3,4,6,7,7,7,7,9], {
+            type: 'box',
+            width: '100',
+            height: '20',
+            raw: true,
+            target: 5,
+            minValue: 5,
+            maxValue: 7,
+            spotRadius: 2,
+            boxLineColor: '#666699',
+            boxFillColor: '#bbddff',
+            whiskerColor: '#666699',
+            outlierLineColor: '#663333',
+            outlierFillColor: '#ffdddd',
+            medianColor: '#669999',
+            targetColor: '#669966'
+        });
+        $('.compositebar').sparkline([3,4,5,2,0,-5,-3,4,2,-4], {
+            type: 'bar',
+            height: '50',
+            barSpacing: 2,
+            barColor: '#6666cc',
+            negBarColor: '#cc6666',
+            zeroColor: '#999999',
+        });
+        $('.compositebar').sparkline([5,6,7,8,9,5,3,2,0,4], {
+            composite: true,
+            width: '200',
+            lineColor: '#335577',
+            fillColor: false,
+            lineWidth: 2,
+            spotColor: '#993333',
+            spotRadius: 3
+        });
+        $(".stackedbar").sparkline([[5,6],[7,2],[1,4],[2,4],[8,3],[8,0],[9,0],[1,2],[3,3],[5,4]], {
+            type: 'bar',
+            height: '50',
+            barSpacing: 2,
+            stackedBarColor: ['#cc6666','#6666cc']
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="line"></div>
+    <div class="bar"></div>
+    <div class="tristate"></div>
+    <div class="discrete"></div>
+    <div class="bullet"></div>
+    <div class="pie"></div>
+    <div class="boxplot"></div>
+    <div class="compositebar"></div>
+    <div class="stackedbar"></div>
+    <!-- sparkline: realtime mouse speed, stack, composit-bar -->
+</body>
+</html>

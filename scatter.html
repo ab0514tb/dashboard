@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.js"></script>
+    <style>
+        html, body, #test1, svg {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="test1">
+    <svg></svg>
+</div>
+
+<script>
+    var graph = {};
+    graph.zoom = {};
+
+    graph.zoomFunc = function() {
+      if (!graph.chart) {
+        return;
+      }
+      var svg = d3.select('svg');
+
+      var xScale = graph.chart.xAxis.scale();
+      var yScale = graph.chart.yAxis.scale();
+      var xDomain = graph.chart.xDomain || xScale.domain;
+      var yDomain = graph.chart.yDomain || yScale.domain;
+      var x_boundary = xScale.domain().slice();
+      var y_boundary = yScale.domain().slice();
+
+      // initialize zoom options
+      var scale = 1;
+      var translate = [0, 0];
+      var scaleExtent = [1, 10];
+      var unzoomEventType = 'dblclick.zoom';
+
+      // fix domain
+      fixDomain = function (domain, boundary) {
+          domain[0] = Math.min(Math.max(domain[0], boundary[0]), boundary[1] - boundary[1] / scaleExtent[1]);
+          domain[1] = Math.max(boundary[0] + boundary[1] / scaleExtent[1], Math.min(domain[1], boundary[1]));
+          return domain;
+      };
+
+      // zoom event handler
+      zoomed = function () {
+          xDomain(xScale.domain());
+          yDomain(yScale.domain());
+          graph.chart.update();
+      };
+
+      // unzoomed event handler
+      unzoomed = function () {
+          xDomain(x_boundary);
+          yDomain(y_boundary);
+          d3zoom.scale(scale).translate(translate);
+          graph.chart.update();
+      };
+
+      // create d3 zoom handler
+      d3zoom = d3.behavior.zoom()
+          .x(xScale)
+          .y(yScale)
+          .scaleExtent(scaleExtent)
+          .on('zoom', zoomed);
+
+      svg.call(d3zoom);
+      d3zoom.scale(scale).translate(translate).event(svg);
+      svg.on(unzoomEventType, unzoomed);
+
+      graph.chart.zoomRender = function(){
+          // reset zoom scale and translate
+          d3zoom.scale(scale).translate(translate);
+
+          // update scale
+          xScale = graph.chart.xAxis.scale();
+          yScale = graph.chart.yAxis.scale();
+          xDomain = graph.chart.xDomain || xScale.domain;
+          yDomain = graph.chart.yDomain || yScale.domain;
+          x_boundary = xScale.domain().slice();
+          y_boundary = yScale.domain().slice();
+
+          // update zoom scale
+          d3zoom.x(xScale).y(yScale);
+
+          svg.call(d3zoom);
+
+          svg.on(unzoomEventType, unzoomed);
+      };
+    };
+
+    // create the chart
+    nv.addGraph(function() {
+        // オプション設定
+        graph.chart = nv.models.scatterChart()
+             .showDistX(true) // 横線
+             .showDistY(true) // 縦線
+             .color(d3.scale.category10().range()) // 色
+             .duration(300);
+        // 軸設定
+        graph.chart.xAxis.tickFormat(d3.format('.02f'));
+        graph.chart.yAxis.tickFormat(d3.format('.02f'));
+        // データ
+        d3.select('#test1 svg')
+            .datum(randomData(4,40))
+            // .datum(groups)
+            .call(graph.chart);
+        graph.zoomFunc();
+        nv.utils.windowResize(graph.chart.update);
+        return graph.chart;
+    });
+    var shapes = ['circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square']
+    var groups = [
+      {
+        key: 'Group1',
+        values: [{
+          x: 0,
+          y: 2,
+          size: 3,
+          shape: shapes[0],
+        },
+        {
+          x: 1,
+          y: 3,
+          size: 3,
+          shape: shapes[0],
+        },
+        {
+          x: 2,
+          y: 4,
+          size: 3,
+          shape: shapes[0],
+        },
+        {
+          x: 7,
+          y: 4,
+          size: 3,
+          shape: shapes[0],
+        },
+        {
+          x: 9,
+          y: 8,
+          size: 3,
+          shape: shapes[0],
+        },
+        {
+          x: 0,
+          y: 5,
+          size: 3,
+          shape: shapes[0],
+        }]
+      },
+      {
+        key: 'Group2',
+        values: [{
+          x: 10,
+          y: 12,
+          size: 5,
+          shape: shapes[1],
+        },
+        {
+          x: 13,
+          y: 11,
+          size: 5,
+          shape: shapes[1],
+        },
+        {
+          x: 16,
+          y: 18,
+          size: 5,
+          shape: shapes[1],
+        }],
+      },
+      {
+        key: 'Group3',
+        values: [{
+          x: 20,
+          y: 22,
+          size: 10,
+          shape: shapes[2],
+        },
+        {
+          x: 26,
+          y: 25,
+          size: 10,
+          shape: shapes[2],
+        },
+        {
+          x: 24,
+          y: 26,
+          size: 10,
+          shape: shapes[2],
+        },
+        {
+          x: 21,
+          y: 27,
+          size: 10,
+          shape: shapes[2],
+        },
+        {
+          x: 23,
+          y: 24,
+          size: 10,
+          shape: shapes[2],
+        },
+        {
+          x: 22,
+          y: 22,
+          size: 10,
+          shape: shapes[2],
+        },
+        {
+          x: 26,
+          y: 28,
+          size: 10,
+          shape: shapes[2],
+        }],
+      },
+    ];
+
+function randomData(groups, points) { //# groups,# points per group
+  var data = [],
+      shapes = ['circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square'],
+      random = d3.random.normal();
+
+  for (i = 0; i < groups; i++) {
+    data.push({
+      key: 'Group ' + i,
+      values: []
+    });
+
+    for (j = 0; j < points; j++) {
+      data[i].values.push({
+        x: random()
+      , y: random()
+      , size: Math.random()   //Configure the size of each scatter point
+      , shape: (Math.random() > 0.95) ? shapes[j % 6] : "circle"  //Configure the shape of each scatter point.
+      });
+    }
+  }
+
+  return data;
+}
+
+</script>
+</body>
+</html>
