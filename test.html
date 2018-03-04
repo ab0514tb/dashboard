@@ -3,130 +3,150 @@
 <head lang='en'>
     <meta charset='UTF-8'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.6/nv.d3.js"></script>
     <script>
+$(function(){
 
-        jQuery(function($){
-            var data = [
-                {
-                    'temp': 0,
-                    'no': 1,
-                    'p':2,
-                },
-                {
-                    'temp': 0,
-                    'no': 1,
-                    'p':2,
-                },
-                {
-                    'temp': 0,
-                    'no': 1,
-                    'p':2,
-                },
-                {
-                    'temp': 0,
-                    'no': 1,
-                    'p':2,
-                },
-                {
-                    'temp': 0,
-                    'no': 1,
-                    'p':2,
-                },
-            ]
-            $("#foo-table").DataTable({
-                data: data,
-                columns: [
-                    { data: 'temp' },
-                    { data: 'no' },
-                    { data: 'p' },
-                ],
-                // // 件数切替機能 無効
-                // lengthChange: true,
-                // // 検索機能 無効
-                // searching: true,
-                // // ソート機能 無効
-                // ordering: true,
-                // // 情報表示 無効
-                // info: true,
-                // // ページング機能 無効
-                // paging: true,
-                // // 横スクロールバーを有効にする (scrollXはtrueかfalseで有効無効を切り替えます)
-                // scrollX: false,
-                // // 縦スクロールバーを有効にする (scrollYは200, "200px"など「最大の高さ」を指定します)
-                // scrollY: 200,
-                // // 列設定
-                // columnDefs: [
-                //     // 1列目を消す(visibleをfalseにすると消えます)
-                //     { targets: 0, visible: false },
-                //     // 2列目(0から始まるため1になっています)の幅を100pxにする
-                //     { targets: 1, width: 100 }
-                // ],
-                // // 件数切替の値を10～50の10刻みにする
-                // lengthMenu: [ 10, 20, 30, 40, 50 ],
-                // // 件数のデフォルトの値を50にする
-                // displayLength: 10,
-                // // 状態を保存する機能をつける
-                // stateSave: true,
-            });
-        });
+$('#test').on('click',function(){
+     console.log('hogehoge');
+    // #svg: ターゲットの svg 要素
+    var width = $("#svg").width();
+    var height = $("#svg").height();
+    $("body").append("<canvas id='canvas1' class='hidden' width="
+                                      + width + " height=" + height +"></canvas>");
+
+    var canvas = $("#canvas1")[0];
+    var ctx = canvas.getContext("2d");
+
+    var svg = $("#svg");
+    svg.attr("viewBox", "0 0 " + width + " " + height);
+
+    var data = new XMLSerializer().serializeToString(svg[0]);
+    var imgsrc = "data:image/svg+xml;charset=utf-8;base64,"
+                           + btoa(unescape(encodeURIComponent(data)));
+    var image = new Image();
+    image.onload = function(){
+
+        ctx.drawImage(image, 0, 0);
+        // Optional: 自動でダウンロードさせる場合
+        $("body").append("<a id='image-file' class='hidden' type='application/octet-stream' href='"
+                           + canvas.toDataURL("image/png") + "' download='graph.png'>Donload Image</a>");
+        $("#image-file")[0].click();
+
+        // 後処理
+        $("#canvas1").remove();
+        $("#image-file").remove();
+
+    }
+    image.src = imgsrc;
+});
+
+        /*These lines are all chart setup.  Pick and choose which chart features you want to utilize. */
+nv.addGraph(function() {
+  var chart = nv.models.lineChart()
+                .useInteractiveGuideline(true)  //We want nice looking tooltips and a guideline!
+                .showLegend(true)       //Show the legend, allowing users to turn on/off line series.
+                .showYAxis(true)        //Show the y-axis
+                .showXAxis(true)        //Show the x-axis
+  ;
+
+  chart.xAxis     //Chart x-axis settings
+      .axisLabel('Time (ms)')
+      .tickFormat(d3.format(',r'));
+
+  chart.yAxis     //Chart y-axis settings
+      .axisLabel('Voltage (v)')
+      .tickFormat(d3.format('.02f'));
+
+  /* Done setting the chart up? Time to render it!*/
+  var myData = sinAndCos();   //You need data...
+
+  d3.select('#chart svg')    //Select the <svg> element you want to render the chart in.
+      .datum(myData)         //Populate the <svg> element with chart data...
+      .call(chart);          //Finally, render the chart!
+
+  //Update the chart when window resizes.
+  nv.utils.windowResize(function() { chart.update() });
+  return chart;
+});
+/**************************************
+ * Simple test data generator
+ */
+function sinAndCos() {
+  var sin = [],sin2 = [],
+      cos = [];
+
+  //Data is represented as an array of {x,y} pairs.
+  for (var i = 0; i < 100; i++) {
+    sin.push({x: i, y: Math.sin(i/10)});
+    sin2.push({x: i, y: Math.sin(i/10) *0.25 + 0.5});
+    cos.push({x: i, y: .5 * Math.cos(i/10)});
+  }
+
+  //Line chart data should be sent as an array of series objects.
+  return [
+    {
+      values: sin,      //values - represents the array of {x,y} data points
+      key: 'Sine Wave', //key  - the name of the series.
+      color: '#ff7f0e'  //color - optional: choose your own line color.
+    },
+    {
+      values: cos,
+      key: 'Cosine Wave',
+      color: '#2ca02c'
+    },
+    {
+      values: sin2,
+      key: 'Another sine wave',
+      color: '#7777ff',
+      area: true      //area - set to true if you want this line to turn into a filled area chart.
+    }
+  ];
+};
+
+});
     </script>
     <title>two-column</title>
     <style>
         html,
         body{
             height: 100%;
+            width: 100%;
             margin: 0;
             padding: 0;
         }
-        .container{
+        .main{
             display: flex;
             height: 100%;
         }
         .side{
             background: #69c;
-            width: 300px;
+            width: 120px;
         }
-        .contents2{
+        .contents {
             flex: 1;
+        }
+        #chart {
+            height: 100%;
         }
     </style>
 </head>
 <body>
-<div class='container'>
+<div class='main'>
     <div class='side'>
-        <ul>
-            <li>side</li>
-        </ul>
     </div>
-    <div class='contents2'>
-        <h1>contents</h1>
-        <table>
-    <thead>
-        <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-<script src ="load-json.js"></script>
-        <table id="foo-table" class="table table-bordered">
-            <thead>
-                <tr><th>temp</th><th>no</th><th>p</th></tr>
-            </thead>
-        </table>
-        <p>フロー：日付クリック→ボタンの日付変更→日付と現状のデータ種類取得→json取得→DataTable更新</p>
-        <p>現状：jsから呼ばれる関数とそれ以外の関数の違いがない</p>
-        <p>現状：init→日付とデータ種類のハンドラ登録（自動でボタン更新）→初期値取得→json取得→DataTable更新</p>
-        <p>目的：クリックイベント→日付取得、データ種類取得（valueに登録しておく？ついでにvalueをボタンに書くように変更？）→json取得→DataTable更新</p>
-        <p>調査：DataTable表示、valueの更新周り、内部関数の名前空間</p>
+    <a href='#' id='test'>testtesttest</a>
+    <div class='contents'>
+        <div id='chart'>
+            <svg id='svg'></svg>
+        </div>
     </div>
 </div>
 </body>
