@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <script src="jquery.min.js"></script>
+  <script src="run_prettify.js"></script>
+  <script src="bootstrap.min.js"></script>
+  <script>
+    $(function(){
+    });
+  </script>
+  <style>
+    * {
+      font-size: 13px;
+      font-family: 'Open Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      background-color: #eee;
+      height: 100%;
+    }
+    .container {
+      background-color: #fff;
+      border-left: solid 1px #ccc;
+      border-right: solid 1px #ccc;
+      box-sizing: border-box;
+      height: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10px;
+      width: 980px;
+    }
+    /* code-prettifyの配色 */
+    .str {color: #EC7600;}
+    .kwd {color: #93C763;}
+    .com {color: #66747B;}
+    .typ {color: #678CB1;}
+    .lit {color: #FACD22;}
+    .pun {color: #F1F2F3;}
+    .pln {color: #F1F2F3;}
+    .tag {color: #8AC763;}
+    .atn {color: #E0E2E4;}
+    .atv {color: #EC7600;}
+    .dec {color: purple;}
+    pre.prettyprint {border: 0px solid #888;}
+    ol.linenums {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .prettyprint {background: #000;}
+    li.L0, li.L1, li.L2, li.L3, li.L4, li.L5, li.L6, li.L7, li.L8, li.L9 {
+      color: #555;
+      list-style-type: decimal;
+    }
+    li.L1, li.L3, li.L5, li.L7, li.L9 {background: #111;}
+    @media print {
+      .str {color: #060;}
+      .kwd {color: #006; font-weight: bold;}
+      .com {color: #600; font-style: italic;}
+      .typ {color: #404; font-weight: bold;}
+      .lit {color: #044;}
+      .pun {color: #440;}
+      .pln {color: #000;}
+      .tag {color: #006; font-weight: bold;}
+      .atn {color: #404;}
+      .atv {color: #060;}
+    }
+  </style>
+</head>
+<body onload="PR.prettyPrint()">
+  <div class='container'>
+    <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+      <nav class="collapse bd-links">
+      </nav>
+    </div>
+    <h1>フロントエンド設計<h1>
+    <h2>はじめに</h2>
+    <p>今回対象とする形式は以下の通り。</p>
+    <ul>
+      <li>HTML5</li>
+      <li>CSS3</li>
+      <li>ES6</li>
+    </ul>
+    <p>※フレームワークは使用しない。JQueryのみ可能</p>
+    <h2>HTML</h2>
+    <h2>CSS</h2>
+    <h2>JS</h2>
+    <h3>strictモード</h3>
+    <p>
+      <div class="u-strong">"use strict";</div>をファイルの先頭につけることで、strictモードで動作することができる。
+      strictモードでは、Javascriptで従来受け入れていた一部のミスをエラーにすることができる。
+      例えば以下のようなものがある。
+    </p>
+    <h4>偶発的なグローバル変数作成禁止</h4>
+    <pre class="prettyprint">
+      var variable1 = 1; // OK
+      variable2 = 2; // NG</pre>
+    <h4>暗黙的に失敗する代入の禁止</h4>
+    <pre class="prettyprint">
+      NaN = 'nan'; // NG</pre>
+    <h4>削除できないプロパティの削除禁止</h4>
+    <pre class="prettyprint">
+      delete Object.prototype; // NG</pre>
+    <h4>関数の引数名などの重複禁止</h4>
+    <pre class="prettyprint">
+      function sum(param1, param1, param3) {...} // NG</pre>
+    <h4>8進数の禁止</h4>
+    <pre class="prettyprint">
+      var x = 0123; // NG</pre>
+    <h4>withの禁止</h4>
+    <pre class="prettyprint">
+      with (document) {...} // NG</pre>
+    <h4>evalの制限</h4>
+    <pre class="prettyprint">
+      eval("var x; delete x;"); // NG</pre>
+    <h4>一部予約語への代入禁止</h4>
+    <pre class="prettyprint">
+      eval = 1; // NG
+      arguments = 2; // NG
+      implements = 3; // NG
+      interface = 4; // NG
+      let = 5; // NG
+      package = 6; // NG
+      private = 7; // NG
+      protected = 8; // NG
+      public = 9; // NG
+      ...</pre>
+    <h3>名前空間</h3>
+    <p></p>
+    <h3>セレクタを変数に格納</h3>
+    <p>パフォーマンス向上</p>
+    <h3>複数回クリックを防ぐ bind/unbind</h3>
+    <h3>新しく追加した要素にもイベントが追加できる live/die</h3>
+    <a href='https://permanent-til-me.ssl-netowl.jp/archives/315'>https://permanent-til-me.ssl-netowl.jp/archives/315</a><br>
+    <a href='https://www.ibm.com/developerworks/jp/web/library/wa-aj-advjquery2/index.html'>https://www.ibm.com/developerworks/jp/web/library/wa-aj-advjquery2/index.html</a><br>
+  </div>
+</body>
+</html>
